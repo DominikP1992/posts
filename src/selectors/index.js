@@ -7,5 +7,7 @@ export const dataSelector = createSelector(
   photos => chunk(photos, 3),
 );
 
-export const changeSelector = createSelector(inputData => inputData, data => data);
-
+export const changeSelector = createSelector(
+  inputData => inputData,
+  data => data,
+);

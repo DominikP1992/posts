@@ -15,6 +15,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
+
 // components
 import Spinner from '../components/generic/Spinner';
 
@@ -50,6 +56,10 @@ const styles = theme => ({
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4,
+  },
+  searchForm: {
+    marginTop: 15,
+    width: '100%',
   },
   layout: {
     width: 'auto',
@@ -92,8 +102,22 @@ const styles = theme => ({
 });
 
 class Wall extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messageBlocks: [],
+      activeFilter: false,
+    };
+  }
+
   componentDidMount() {
     this.props.fetchWallMessages();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.messageBlocks !== nextProps.messageBlocks) {
+      this.setState({ messageBlocks: nextProps.messageBlocks });
+    }
   }
 
   redirectToPost = id => this.props.history.push(`/wall/${id}`);
@@ -101,6 +125,24 @@ class Wall extends React.Component {
   signout = () => {
     signout();
     this.props.history.push('/login');
+  };
+
+  updateFilters = (e) => {
+    if (!e.target.value) {
+      return this.setState({
+        messageBlocks: this.props.messageBlocks,
+        activeFilter: false,
+      });
+    }
+    const filteredMessages = _.chunk(
+      _.flatten(this.props.messageBlocks).filter(message =>
+        `${message.title} ${message.body}`.indexOf(e.target.value) > -1),
+      3,
+    );
+    return this.setState({
+      messageBlocks: filteredMessages,
+      activeFilter: true,
+    });
   };
 
   renderGrid = () => {
@@ -112,13 +154,21 @@ class Wall extends React.Component {
       );
     }
 
-    if (!_.size(this.props.messageBlocks)) {
+    if (!_.size(this.state.messageBlocks) && this.state.activeFilter) {
+      return (
+        <Typography variant="display3" align="center" gutterBottom>
+          🧐 No records found
+        </Typography>
+      );
+    }
+
+    if (!_.size(this.state.messageBlocks)) {
       return <Spinner />;
     }
 
     return (
       <Grid container spacing={40}>
-        {this.props.messageBlocks.map(messages => (
+        {this.state.messageBlocks.map(messages => (
           <Grid item key={messages[0].id} xs={12} sm={6} md={4}>
             <Card className={this.props.classes.card}>
               {messages.map(message => (
@@ -192,6 +242,18 @@ class Wall extends React.Component {
                 Chat created for the needs of recruitment, I think something
                 works there, but who knows? 🤗
               </Typography>
+              <FormControl className={classes.searchForm}>
+                <InputLabel htmlFor="search">Search post</InputLabel>
+                <Input
+                  id="search"
+                  onChange={this.updateFilters}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
             </div>
           </div>
           <div className={`${classes.layout} ${classes.cardGrid}`}>

@@ -9,10 +9,10 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case types.FETCH_WALL_MESSAGES_SUCCESS:
-      return ({
+      return {
         ...state,
         messages: updateMessageObjects(action.payload),
-      });
+      };
     case types.FETCH_WALL_MESSAGES_FAILURE:
       return {
         ...state,

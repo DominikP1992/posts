@@ -9,11 +9,10 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case types.FETCH_MESSAGE_SUCCESS:
-      return ({
+      return {
         ...state,
         messages: updateMessageObject(action.payload),
-
-      });
+      };
     case types.FETCH_MESSAGE_FAILURE:
       return {
         ...state,

@@ -3,7 +3,6 @@ import types from '../types';
 
 import { apiUrl } from '../../constants/apiConstants';
 
-
 function fetchMessageRequest() {
   return {
     type: types.FETCH_MESSAGE_REQUEST,
@@ -34,7 +33,8 @@ export function fetchMessage(id) {
           return dispatch(fetchMessageSuccess(res.data));
         }
         return dispatch(fetchMessageFailure('error'));
-      }).catch(() => dispatch(fetchMessageFailure('error')));
+      })
+      .catch(() => dispatch(fetchMessageFailure('error')));
   };
 }
 

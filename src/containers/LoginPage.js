@@ -15,10 +15,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import ErrorInfo from '../components/Login/ErrorInfo';
 import FormInput from '../components/Login/FormInput';
 
-
 // utils
 import { authenticate, checkAuthentication } from './../authentication/index';
-
 
 const styles = theme => ({
   layout: {
@@ -71,9 +69,7 @@ class SignIn extends React.Component {
 
   componentDidMount() {
     this.validateForms();
-    return (
-      checkAuthentication() && this.props.history.push('wall')
-    );
+    return checkAuthentication() && this.props.history.push('wall');
   }
 
   onSubmit = (e) => {
@@ -90,7 +86,6 @@ class SignIn extends React.Component {
     }
     return !false;
   };
-
 
   validateForms = () => {
     const emailRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/g;

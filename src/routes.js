@@ -11,10 +11,8 @@ import LoginPage from './containers/LoginPage';
 import Wall from './containers/Wall';
 import Card from './containers/Card';
 
-
 // utils
 import { checkAuthentication } from './authentication/index';
-
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -34,15 +32,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
-
 const Routes = () => (
   <Router>
     <Switch>
-      <Route
-        exact
-        path="/"
-        render={() => <Redirect to="/wall" />}
-      />
+      <Route exact path="/" render={() => <Redirect to="/wall" />} />
       <PrivateRoute exact path="/wall" component={Wall} />
       <PrivateRoute path="/wall/:id" component={Card} />
       <Route path="/login" component={LoginPage} />

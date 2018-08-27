@@ -14,7 +14,7 @@ const FormInput = ({
 }) => (
   <FormControl margin="normal" fullWidth>
     <InputLabel error={error}>
-      {error ? errorDescription : description }
+      {error ? errorDescription : description}
     </InputLabel>
     <Input type={type} error={error} value={value} onChange={onChange} />
   </FormControl>

@@ -4,7 +4,6 @@ import types from '../types';
 
 import { apiUrl } from '../../constants/apiConstants';
 
-
 function fetchWallMessagesRequest() {
   return {
     type: types.FETCH_WALL_MESSAGES_REQUEST,
@@ -35,6 +34,7 @@ export function fetchWallMessages() {
           return dispatch(fetchWallMessagesSuccess(res.data));
         }
         return dispatch(fetchWallMessagesFailure('error'));
-      }).catch(() => dispatch(fetchWallMessagesFailure('error')));
+      })
+      .catch(() => dispatch(fetchWallMessagesFailure('error')));
   };
 }
